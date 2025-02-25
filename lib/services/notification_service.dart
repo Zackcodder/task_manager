@@ -107,7 +107,7 @@ class NotificationService {
   }
 
   Future<void> showInstantNotification(int taskId, String title) async {
-    Future.delayed(Duration(minutes: 5));
+   await Future.delayed(Duration(minutes: 5));
     const AndroidNotificationDetails androidDetails =
     
         AndroidNotificationDetails(
@@ -120,7 +120,6 @@ class NotificationService {
     const NotificationDetails notificationDetails = NotificationDetails(
       android: androidDetails,
     );
- Future.delayed(Duration(minutes: 5));
     await _notificationsPlugin.show(
       0, // Notification ID
       "Task Manager",

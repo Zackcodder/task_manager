@@ -17,12 +17,12 @@ class HomeScreen extends StatelessWidget {
       body: taskProvider.tasks.isEmpty
           ? Center(child: Text("No tasks available. Add a task!"))
           : ListView.builder(
-              itemCount: taskProvider.tasks.length,
-              itemBuilder: (context, index) {
-                final task = taskProvider.tasks[index];
-                return TaskItem(task: task, index: index);
-              },
-            ),
+            itemCount: taskProvider.tasks.length,
+            itemBuilder: (context, index) {
+              final task = taskProvider.tasks[index];
+              return TaskItem(task: task, index: index);
+            },
+          ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddTaskDialog(context),
         child: Icon(Icons.add),
