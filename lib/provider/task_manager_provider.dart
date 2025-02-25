@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../models/task_model.dart';
 import '../services/database_service.dart';
 import '../services/notification_service.dart';
@@ -13,14 +14,13 @@ class TaskProvider extends ChangeNotifier {
     _loadTasks();
   }
 
-  // Load tasks from Hive
+  ///Load tasks from Hive
   void _loadTasks() {
     _tasks = _dbService.getTasks();
     notifyListeners();
   }
 
-  // Add a new task
-  // Add a new task
+  ///Add a new task
   Future<void> addTask(String title, String description) async {
     final task = Task(
       title: title,
@@ -36,16 +36,25 @@ class TaskProvider extends ChangeNotifier {
     // .scheduleTaskNotification(task.hashCode, title);
   }
 
-  // Toggle task completion
+  ///Toggle task completion
   Future<void> toggleTask(int index) async {
     _tasks[index].isCompleted = !_tasks[index].isCompleted;
     await _dbService.updateTask(index, _tasks[index]);
     notifyListeners();
   }
 
-  // Delete a task
+  ///Delete a task
   Future<void> deleteTask(int index) async {
     await _dbService.deleteTask(index);
     _loadTasks();
   }
+
+  ///edit task
+   editTask(int index, String newTitle) async{
+    _tasks[index].title = newTitle;
+    notifyListeners();
+    await NotificationService().showInstantNotification(index, newTitle);
+  }
+
+  
 }

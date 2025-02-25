@@ -23,14 +23,66 @@ class TaskItem extends StatelessWidget {
         title: Text(
           task.title,
           style: TextStyle(
+            color: Colors.black,
             decoration: task.isCompleted ? TextDecoration.lineThrough : null,
           ),
         ),
-        trailing: IconButton(
-          icon: Icon(Icons.delete, color: Colors.red),
-          onPressed: () => taskProvider.deleteTask(index),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ///edit button
+            IconButton(
+              icon: Icon(Icons.edit, color: Colors.black),
+              onPressed: () =>
+                  _showEditTaskDialog(context, taskProvider, task, index),
+            ),
+
+            ///deelete button
+            IconButton(
+              icon: Icon(Icons.delete, color: Colors.red),
+              onPressed: () => taskProvider.deleteTask(index),
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  
+  ///edit task dialog
+  void _showEditTaskDialog(
+      BuildContext context, TaskProvider taskProvider, Task task, int index) {
+    TextEditingController taskController =
+        TextEditingController(text: task.title);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Edit Task"),
+          content: TextField(
+            controller: taskController,
+            decoration: InputDecoration(hintText: "Update task title"),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (taskController.text.isNotEmpty) {
+                  taskProvider.editTask(index, taskController.text);
+                  Navigator.pop(context);
+                }
+
+              
+              },
+              child: Text("Save"),
+            ),
+          ],
+        );
+      },
     );
   }
 }
